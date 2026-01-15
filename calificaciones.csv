@@ -1,0 +1,16 @@
+matricula,nombre,materia,calificacion,grupo
+A001,Juan Perez,Matematicas,85,3A
+A001,Juan Perez,Historia,78,3A
+A001,Juan Perez,Fisica,90,3A
+A002,Ana Lopez,Matematicas,65,3A
+A002,Ana Lopez,Historia,70,3A
+A002,Ana Lopez,Fisica,60,3A
+A003,Carlos Ruiz,Matematicas,95,3B
+A003,Carlos Ruiz,Historia,88,3B
+A003,Carlos Ruiz,Fisica,92,3B
+A004,Maria Torres,Matematicas,55,3B
+A004,Maria Torres,Historia,,3B
+A004,Maria Torres,Fisica,58,3B
+A005,Luis Gomez,Matematicas,72,3A
+A005,Luis Gomez,Historia,75,3A
+A005,Luis Gomez,Fisica,68,3A
