@@ -1,4 +1,7 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
+
 
 def separate():#Separador
     print("#" * 20)
@@ -7,11 +10,10 @@ def separate():#Separador
 def clean_data(df):#Limpieza de datos
     df = df.copy()
     df["calificacion"] = df.groupby(["matricula", "nombre"])["calificacion"].transform(lambda x: x.fillna(x.mean()))
-    separate()
     return df
 
 def row(df):#¿Cuántos registros tiene el dataset?
-    print(f"El número de registros en el dataset es: {len(df)}")
+    print(f"El número de registros en el dataset son: {len(df)}")
     separate()
 
 def blank(df):#¿Hay calificaciones faltantes? ¿En dónde?
@@ -29,31 +31,60 @@ def blank(df):#¿Hay calificaciones faltantes? ¿En dónde?
 def individual_mean(df):#¿Cuál es el promedio por alumno?
     ind_mean = df.groupby(["matricula", "nombre"])["calificacion"].mean().reset_index().rename(
         columns={"calificacion": "promedio"})
-    print(ind_mean)
-    separate()
+    return(ind_mean)
+
+def individual_mean_plot(df):
+    plt.figure(figsize=(10,10))
+    plt.bar(df["nombre"], df["promedio"], color="blueviolet")
+    plt.title("Promedio por alumno")
+    plt.xlabel("Nombre")
+    plt.ylabel("Promedio")
+    plt.xticks(rotation=45, ha="right")
+    plt.show()
 
 def assignment_mean(df):#¿Cuál es el promedio por materia?
     assign_mean = df.groupby(["materia"])["calificacion"].mean().reset_index().rename(columns={"calificacion": "promedio_materia"})
-    print(assign_mean)
-    separate()
+    return (assign_mean)
+
+def assignment_mean_plot(df):
+    plt.figure(figsize=(6, 4))
+    plt.bar(df["materia"], df["promedio_materia"], color="mediumvioletred")
+    plt.title("Promedio por materia")
+    plt.xlabel("Materia", fontsize=10, fontweight="bold")
+    plt.ylabel("Promedio", fontsize=10, fontweight="bold")
+    plt.show()
 
 def failed_student(df):#¿Qué alumnos están reprobados (promedio < 70)?
     new_dataset = df.groupby(["matricula", "nombre"])["calificacion"].mean().reset_index().rename(columns={"calificacion" : "promedio"})
     fail_students = new_dataset[new_dataset["promedio"] < 70]
+    print("Los alumnos reprobados (menores a 7) son:")
     print(fail_students)
-    separate()
 
 def group_mean(df):#¿Cuál grupo tiene mejor promedio general?
     new_dataset = df.groupby("grupo")["calificacion"].mean().reset_index()
-    better_mean = new_dataset.iloc[new_dataset["calificacion"].idxmax()]
-    print("El grupo con mejor promedio general es: ")
-    print(better_mean)
-    separate()
+    return(new_dataset)
+
+def group_mean_plot(df):
+    plt.figure(figsize=(5, 4))
+    plt.bar(df["grupo"], df["calificacion"], color="orange")
+    plt.title("Mejor promedio general")
+    plt.xlabel("Grupo", fontweight="bold")
+    plt.ylabel("Promedio", fontweight="bold")
+    plt.show()
 
 def sum_group(df):#¿Cuántos alumnos hay por grupo?
     students_group = df.groupby("grupo")["matricula"].nunique().reset_index(name="total_alumnos")
-    print(students_group)
-    separate()
+    return(students_group)
+
+def sum_group_plot(df):
+    plt.figure(figsize=(5, 4))
+    plt.bar(df["grupo"], df["total_alumnos"], color="darkslategray")
+    plt.title("Número de alumnos por grupo")
+    plt.xlabel("Grupo", fontweight="bold")
+    plt.ylabel("Cantidad de alumnos", fontweight="bold")
+    ax = plt.gca()#Obtener los ejes actuales
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))#Forzar el uso de números enteros en los ejes Y
+    plt.show()
 
 def main():
     dataset = pd.read_csv("calificaciones.csv")
@@ -63,11 +94,25 @@ def main():
     dataset_clean = clean_data(dataset)
 
     row(dataset_clean)
-    individual_mean(dataset_clean)
-    assignment_mean(dataset_clean)
+
+    #Gráficar el promedio por alumno
+    ind_mean = individual_mean(dataset_clean)
+    individual_mean_plot(ind_mean)
+
+    #Gráfica el promedio por materia
+    assig_mean = assignment_mean(dataset_clean)
+    assignment_mean_plot(assig_mean)
+
+    #Alumnos reprobados
     failed_student(dataset_clean)
-    group_mean(dataset_clean)
-    sum_group(dataset_clean)
+
+    #Grupo con mejor promedio general
+    gmean = group_mean(dataset_clean)
+    group_mean_plot(gmean)
+
+    #Alumnos por grupo
+    sgroup = sum_group(dataset_clean)
+    sum_group_plot(sgroup)
 
 main()
 
