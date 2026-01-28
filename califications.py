@@ -1,7 +1,7 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
-
 
 def separate():#Separador
     print("#" * 20)
@@ -33,7 +33,7 @@ def individual_mean(df):#¿Cuál es el promedio por alumno?
         columns={"calificacion": "promedio"})
     return(ind_mean)
 
-def individual_mean_plot(df):
+def individual_mean_plot(df):#Análisis por agregación del promedio individual por alumno
     plt.figure(figsize=(10,10))
     plt.bar(df["nombre"], df["promedio"], color="blueviolet")
     plt.title("Promedio por alumno")
@@ -46,7 +46,7 @@ def assignment_mean(df):#¿Cuál es el promedio por materia?
     assign_mean = df.groupby(["materia"])["calificacion"].mean().reset_index().rename(columns={"calificacion": "promedio_materia"})
     return (assign_mean)
 
-def assignment_mean_plot(df):
+def assignment_mean_plot(df):#Análisis por agregación del promedio por materia
     plt.figure(figsize=(6, 4))
     plt.bar(df["materia"], df["promedio_materia"], color="mediumvioletred")
     plt.title("Promedio por materia")
@@ -64,7 +64,7 @@ def group_mean(df):#¿Cuál grupo tiene mejor promedio general?
     new_dataset = df.groupby("grupo")["calificacion"].mean().reset_index()
     return(new_dataset)
 
-def group_mean_plot(df):
+def group_mean_plot(df):#Análisis por agregación del promedio por grupo
     plt.figure(figsize=(5, 4))
     plt.bar(df["grupo"], df["calificacion"], color="orange")
     plt.title("Mejor promedio general")
@@ -76,7 +76,7 @@ def sum_group(df):#¿Cuántos alumnos hay por grupo?
     students_group = df.groupby("grupo")["matricula"].nunique().reset_index(name="total_alumnos")
     return(students_group)
 
-def sum_group_plot(df):
+def sum_group_plot(df):#Análisis por agregación del número de alumnos por grupo
     plt.figure(figsize=(5, 4))
     plt.bar(df["grupo"], df["total_alumnos"], color="darkslategray")
     plt.title("Número de alumnos por grupo")
@@ -86,7 +86,70 @@ def sum_group_plot(df):
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))#Forzar el uso de números enteros en los ejes Y
     plt.show()
 
-def main():
+#Análisis distributivo de las calificaciones de todos los alumnos.
+#Responde a la pregunta ¿Cómo se distribuyen las calificaciones?
+def grades_distribution_plot(df):
+    plt.figure(figsize=(5, 4))
+    plt.hist(df["calificacion"], bins=10)
+    plt.title("Distribución de calificaciones")
+    plt.xlabel("Calificaciones", fontweight="bold")
+    plt.ylabel("Frecuencia", fontweight="bold")
+    ax = plt.gca()  # Obtener los ejes actuales
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))  # Forzar el uso de números enteros en los ejes Y
+    plt.show()
+
+#Análsis distributivo por grupo (boxplot)
+#Responde a la pregunta ¿Cómo varía la distribución de calificación entre grupos?
+def group_distribution_plot(df):
+    df.boxplot(column="calificacion", by="grupo", figsize=(5, 4))
+    plt.title("Distribución de calificaciones por grupo")
+    plt.suptitle("")
+    plt.xlabel("Grupo")
+    plt.ylabel("Calificación")
+    plt.show()
+
+#Creamos un nuevo df con la columna "promedio por alumno" para poder realizar el Scatter plot de calificacion en relacion al promedio del alumno.
+#Analisis relacional:
+def add_student_average(df):
+    avg = df.groupby(["matricula", "nombre"])["calificacion"].mean().reset_index().rename(columns={"calificacion": "promedio_alumno"})
+    df_join = df.merge(avg, on=["matricula", "nombre"])#Hacemos un Join del df "avg" (average) con el df original, basados en las columnas "matricula" y "nombre"
+    return df_join
+
+def student_average_plot(df):  # Análisis relacional del promedio y calificaciones
+    x = df["promedio_alumno"]
+    y = df["calificacion"]
+
+    #Se calcula el coeficiente de correlación de Pearson (r), solamente para mostrar numericamente
+    corr = x.corr(y)
+
+    #Regresión lineal, este metodo me devuelve la pendiente y el intercepto de la formula de la regresión líneal
+    #El uno es el número de dimensiones
+    a, b = np.polyfit(x, y, 1)#a - pendiente, b - intercepto, y=ax+b
+    y_pred = a * x + b
+
+    # Gráfica
+    plt.figure(figsize=(7, 7))
+    plt.scatter(x, y, alpha=0.6, label="Datos reales")
+    plt.plot(x, y_pred, linewidth=2, label="Regresión lineal")
+
+    plt.title("Relación entre el promedio del alumno y las calificaciones individuales")
+    plt.xlabel("Promedio del alumno")
+    plt.ylabel("Calificaciones")
+
+    plt.text(
+        0.05, 0.95,
+        f"r = {corr:.2f}",
+        transform=plt.gca().transAxes,
+        fontsize=11,
+        verticalalignment="top",
+        bbox=dict(boxstyle="round", alpha=0.3)
+    )
+
+    plt.legend()
+    plt.show()
+
+
+def main():#Función main
     dataset = pd.read_csv("calificaciones.csv")
 
     blank(dataset)
@@ -94,6 +157,12 @@ def main():
     dataset_clean = clean_data(dataset)
 
     row(dataset_clean)
+
+    #Distribución de calificaciones
+    grades_distribution_plot(dataset_clean)
+
+    #Distribución de calificaciones entre grupos
+    group_distribution_plot(dataset_clean)
 
     #Gráficar el promedio por alumno
     ind_mean = individual_mean(dataset_clean)
@@ -113,6 +182,10 @@ def main():
     #Alumnos por grupo
     sgroup = sum_group(dataset_clean)
     sum_group_plot(sgroup)
+
+    #Analisis relacional
+    student_average = add_student_average(dataset_clean)
+    student_average_plot(student_average)
 
 main()
 
