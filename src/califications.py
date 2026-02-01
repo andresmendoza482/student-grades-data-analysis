@@ -40,6 +40,7 @@ def individual_mean_plot(df):#Análisis por agregación del promedio individual 
     plt.xlabel("Nombre")
     plt.ylabel("Promedio")
     plt.xticks(rotation=45, ha="right")
+    plt.savefig("../figures/individual_mean.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 def assignment_mean(df):#¿Cuál es el promedio por materia?
@@ -52,6 +53,7 @@ def assignment_mean_plot(df):#Análisis por agregación del promedio por materia
     plt.title("Promedio por materia")
     plt.xlabel("Materia", fontsize=10, fontweight="bold")
     plt.ylabel("Promedio", fontsize=10, fontweight="bold")
+    plt.savefig("../figures/assignment_mean.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 def failed_student(df):#¿Qué alumnos están reprobados (promedio < 70)?
@@ -70,6 +72,7 @@ def group_mean_plot(df):#Análisis por agregación del promedio por grupo
     plt.title("Mejor promedio general")
     plt.xlabel("Grupo", fontweight="bold")
     plt.ylabel("Promedio", fontweight="bold")
+    plt.savefig("../figures/group_mean.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 def sum_group(df):#¿Cuántos alumnos hay por grupo?
@@ -84,9 +87,10 @@ def sum_group_plot(df):#Análisis por agregación del número de alumnos por gru
     plt.ylabel("Cantidad de alumnos", fontweight="bold")
     ax = plt.gca()#Obtener los ejes actuales
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))#Forzar el uso de números enteros en los ejes Y
+    plt.savefig("../figures/sum_group.png", dpi=300, bbox_inches="tight")
     plt.show()
 
-#Análisis distributivo de las calificaciones de todos los alumnos.
+#Análisis distributivo de las calificaciones de todos los alumnos (histograma).
 #Responde a la pregunta ¿Cómo se distribuyen las calificaciones?
 def grades_distribution_plot(df):
     plt.figure(figsize=(5, 4))
@@ -96,9 +100,10 @@ def grades_distribution_plot(df):
     plt.ylabel("Frecuencia", fontweight="bold")
     ax = plt.gca()  # Obtener los ejes actuales
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))  # Forzar el uso de números enteros en los ejes Y
+    plt.savefig("../figures/grades_distribution.png", dpi=300, bbox_inches="tight")
     plt.show()
 
-#Análsis distributivo por grupo (boxplot)
+#Análsis distributivo por grupo (boxplot/diagrama de caja o bigote)
 #Responde a la pregunta ¿Cómo varía la distribución de calificación entre grupos?
 def group_distribution_plot(df):
     df.boxplot(column="calificacion", by="grupo", figsize=(5, 4))
@@ -106,6 +111,7 @@ def group_distribution_plot(df):
     plt.suptitle("")
     plt.xlabel("Grupo")
     plt.ylabel("Calificación")
+    plt.savefig("../figures/group_distribution.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 #Creamos un nuevo df con la columna "promedio por alumno" para poder realizar el Scatter plot de calificacion en relacion al promedio del alumno.
@@ -115,7 +121,7 @@ def add_student_average(df):
     df_join = df.merge(avg, on=["matricula", "nombre"])#Hacemos un Join del df "avg" (average) con el df original, basados en las columnas "matricula" y "nombre"
     return df_join
 
-def student_average_plot(df):  # Análisis relacional del promedio y calificaciones
+def student_average_plot(df):  # Análisis relacional del promedio y calificaciones (gráfica de distribución)
     x = df["promedio_alumno"]
     y = df["calificacion"]
 
@@ -146,11 +152,12 @@ def student_average_plot(df):  # Análisis relacional del promedio y calificacio
     )
 
     plt.legend()
+    plt.savefig("../figures/student_average.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 
 def main():#Función main
-    dataset = pd.read_csv("calificaciones.csv")
+    dataset = pd.read_csv("../data/calificaciones.csv")
 
     blank(dataset)
 
