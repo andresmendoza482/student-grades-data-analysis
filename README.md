@@ -1,4 +1,4 @@
-<div style="text-align:center">
+<div align="center">
 
 # ANÁLISIS DE DATOS: CALIFICACIONES DE ALUMNOS.
 
@@ -41,7 +41,7 @@ Esto permitió que los datos obtenidos fueran consistentes y comparables.
 
 #### Análisis descriptivos por agregación: 
 
-![Promedio individual](./individual_mean.png)
+![Promedio individual](./figures/individual_mean.png)
 
 1. Observación - Se observa una variabilidad considerable en los promedios individuales, con alumnos concentrados en rangos altos y otros en rangos más bajos.
 
@@ -53,7 +53,7 @@ Esto permitió que los datos obtenidos fueran consistentes y comparables.
 <hr>
 <br>
 
-![Promedio por materia](./assignment_mean.png)
+![Promedio por materia](./figures/assignment_mean.png)
 
 1. Observación - Los promedios por materia arrojan similitudes númericas entre sí, sin tener mucha variabilidad.
 
@@ -65,7 +65,7 @@ Esto permitió que los datos obtenidos fueran consistentes y comparables.
 <hr>
 <br>
 
-![Promedio grupal](./group_mean.png)
+![Promedio grupal](./figures/group_mean.png)
 
 1. Observación - Los grupos presentan promedios generales similares, mostrando un comportamiento estable en términos de desempeño promedio.
 
@@ -77,7 +77,7 @@ Esto permitió que los datos obtenidos fueran consistentes y comparables.
 <hr>
 <br>
 
-![Alumnos por grupo](./sum_group.png)
+![Alumnos por grupo](./figures/sum_group.png)
 
 1. Observación - La gráfica muestra una comparación entre la cantidad de alumnos que hay entre los dos grupos, haciendose notar que el grupo 3A tiene un alumno más que el grupo 3B.
 
@@ -91,7 +91,7 @@ Esto permitió que los datos obtenidos fueran consistentes y comparables.
 
 #### Análisis descriptivo por distribución:
 
-![Distribución de calificaciones por grupo](./group_distribution.png)
+![Distribución de calificaciones por grupo](./figures/group_distribution.png)
 
 1. Observación - Se observan diferencias en la dispersión de las calificaciones entre los grupos, donde el grupo 3A presenta una distribución más concentrada y el grupo 3B una mayor dispersión.
 
@@ -103,7 +103,7 @@ Esto permitió que los datos obtenidos fueran consistentes y comparables.
 <hr>
 <br>
 
-![Frecuencia de calificaciones del total de alumnos](./grades_distribution.png)
+![Frecuencia de calificaciones del total de alumnos](./figures/grades_distribution.png)
 
 1. Observación - La distribución de las calificaciones muestra una dispersión amplia a lo largo de distintos rangos, sin una concentración uniforme en un solo intervalo.
 
@@ -117,7 +117,7 @@ Esto permitió que los datos obtenidos fueran consistentes y comparables.
 
 #### Análisis relacional:
 
-![Promedio del estudiante en realación a sus calificaciones individuales](./student_average.png)
+![Promedio del estudiante en realación a sus calificaciones individuales](./figures/student_average.png)
 
 1. Observación - Por último analizamos la relación entre el promedio de los alumnos y sus calificaciones, apreciando la dispersión de estos datos, así como la regresión líneal, la cuál nos indica en promedio en qué punto de la gráfica se encuentran los datos, se observa una relación positiva entre el promedio del alumno y sus calificaciones individuales, evidenciada por una tendencia ascendente en la línea de regresión.
 
@@ -147,7 +147,7 @@ Estos resultados proporcionan una base objetiva para evaluar el desempeño acad�
 - Excel.
 
 
-<div style="text-align:center">
+<div align="center">
 
 ## Created by Andrés Mendoza.
 
